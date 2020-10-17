@@ -1,0 +1,65 @@
+﻿@using Website.Models;
+@model List<RaceViewModel>;
+@{
+    ViewData["Title"] = "Race Results";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-4 offset-md-8 form-group">
+            <select id="year_select" class="form-control">
+            </select>
+        </div>
+    </div>
+    <div class="text-center col-md-12">
+    <h1 class="display-4">@ViewBag.Year Race Results</h1>
+
+    <table class="table table-bordered bg-light">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Race</th>
+                <th>Track</th>
+                <th>Winner</th>
+                <th>Pole</th>
+                <th>Results</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (RaceViewModel race in Model)
+            {
+                <tr>
+                    <td>@race.RaceNum</td>
+                    <td>@race.Name</td>
+                    <td>@race.Track</td>
+                    <td>@race.Winner</td>
+                    <td>@race.Pole</td>
+                    <td><a href="../../@race.Link" target="_blank">@race.Link</a></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(document).ready(function() {
+    $.ajax({
+        url: '/Home/GetYears',
+        success: function(data) {
+            for(var i = 0; i < data.length; i++) {
+                let option = $('<option></option>');
+                option.val(data[i].substring(data[i].length - 4));
+                option.text(data[i].substring(data[i].length - 4));
+                $('#year_select').append(option);
+            }
+            $('#year_select option[value="' + @ViewBag.Year + '"]').prop('selected', true);
+        }
+    });
+
+    $('#year_select').change(function(d) {
+        var year = $('#year_select option:selected').val();
+        window.location.replace('/Home/RaceResults?year=' + year);
+    });
+});
+</script>

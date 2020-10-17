@@ -1,0 +1,43 @@
+F,S,#,DRIVER,LAPS,,POINTS,STATUS
+1,21,2,R Wallace,60,14,185,Running
+2,7,88,D Jarrett,60,13,175,Running
+3,9,5,T Labonte,60,0,165,Running
+4,15,99,J Burton,60,0,160,Running
+5,20,43,J Andretti,60,0,155,Running
+6,10,33,K Schrader,60,0,150,Running
+7,6,18,B Labonte,60,0,146,Running
+8,14,22,W Burton,60,0,142,Running
+9,31,26,J Benson Jr.,60,0,138,Running
+10,2,25,T Barron,60,9,139,Running
+11,12,12,J Mayfield,60,0,130,Running
+12,32,7,G Bodine,60,0,127,Running
+13,16,10,R Rudd,60,0,124,Running
+14,19,28,K Irwin Jr.,60,0,121,Running
+15,30,23,J Spencer,60,0,118,Running
+16,28,36,E Irvan,60,0,115,Running
+17,17,30,D Cope,60,0,112,Running
+18,34,50,R Craven,59,0,109,Running
+19,38,46,W Dallenbach Jr.,59,0,106,Running
+20,39,81,K Wallace,59,0,103,Running
+21,8,21,M Waltrip,59,0,100,Running
+22,24,90,D Trickle,59,0,97,Running
+23,18,11,B Bodine,59,0,94,Running
+24,35,59,M Gibson,59,0,91,Running
+25,36,98,G Sacks,59,0,88,Running
+26,23,97,C Little,59,0,85,Running
+27,11,4,B Hamilton,57,0,82,Running
+28,13,40,S Marlin,56,0,79,Running
+29,42,42,J Nemechek,41,0,76,Tire
+30,4,6,M Martin,41,0,73,Retired
+31,5,24,J Gordon,35,12,75,Retired
+32,41,75,R Mast,34,0,67,Retired
+33,1,01,C Barron,33,12,69,Accident
+34,22,31,M Skinner,32,0,61,Retired
+35,40,3,D Earnhardt,32,0,58,Accident
+36,29,9,L Speed,32,0,55,Accident
+37,25,91,K Lepage,32,0,52,Accident
+38,26,16,T Musgrave,32,0,49,Retired
+39,33,44,K Petty,32,0,46,Retired
+40,27,1,S Park,32,0,43,Accident
+41,37,77,R Pressley,32,0,40,Retired
+42,3,94,B Elliott,0,0,37,Piston

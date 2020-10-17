@@ -1,0 +1,51 @@
+﻿@model List<string[]>;
+
+@{
+    ViewData["Title"] = "Season Standings";
+}
+<div class="row">
+    <div class="col-md-4 offset-md-4 form-group">
+        <select id="year_select" class="form-control">
+            @foreach (string year in Model[0])
+            {
+                <option value="@year.Substring(year.Length - 4)">@year.Substring(year.Length - 4)</option>
+            }
+        </select>
+    </div>
+
+    <div class="col-md-4 form-group">
+        <select id="week_select" class="form-control">
+            @foreach (string dir in Model[1])
+            {
+                <option value="@dir.Substring(dir.Length - 4)">@dir.Substring(dir.Length - 4)</option>
+            }
+        </select>
+    </div>
+</div>
+
+<div class="text-center col-md-12">
+    <h1 class="display-4"><span id="cur_year"></span> Winston Cup Standings</h1>
+    <table class="table table-bordered table-responsive" id="season_standings">
+        <thead>
+            <tr>
+                <th>Position</th>
+                <th>Driver</th>
+                <th>Number</th>
+                <th>Points</th>
+                <th>Behind</th>
+                <th>Starts</th>
+                <th>Wins</th>
+                <th>Top 5s</th>
+                <th>Top 10s</th>
+                <th>DNFs</th>
+                <th>Laps Led</th>
+                <th>Laps</th>
+                <th>Avg Fin</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+</div>
+
+<script type="text/javascript" src="~/js/index.js" defer></script>

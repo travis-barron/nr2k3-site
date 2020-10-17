@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="LumenWorksCsvReader" Version="4.0.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Data\csv\" />
+    <Folder Include="Data\RaceResults\" />
+    <Folder Include="wwwroot\Data\RaceResults\" />
+    <Folder Include="wwwroot\Images\Icons\" />
+    <Folder Include="wwwroot\Images\Backgrounds\" />
+    <Folder Include="wwwroot\RaceResults\" />
+  </ItemGroup>
+
+</Project>
