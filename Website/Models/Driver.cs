@@ -20,5 +20,8 @@ namespace Website.Models
         public int LapsLed { get; set; }
         public List<int> Finishes { get; set; }
         public float AvgFin { get; set; }
+        public string PrimaryColor { get; set; }
+        public string SecondaryColor { get; set; }
+        public int DriverId { get; set; }
     }
 }

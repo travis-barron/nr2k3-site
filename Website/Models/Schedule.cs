@@ -15,7 +15,7 @@ namespace Website.Models
         public List<Track> LoadSchedule(string year) {
             List<Track> _schedule = new List<Track>();
             
-            string scheduleFile = "./Data/" + year + "/schedule.csv";
+            string scheduleFile = "./wwwroot/Data/" + year + "/schedule.csv";
 
             var scheduleTable = new DataTable();
             using (var csvReader = new CsvReader(new StreamReader(System.IO.File.OpenRead(scheduleFile)), true))

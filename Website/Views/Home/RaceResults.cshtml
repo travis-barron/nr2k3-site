@@ -1,9 +1,9 @@
 ﻿@using Website.Models;
-@model List<RaceViewModel>;
+@model RaceResultsViewModel;
 @{
     ViewData["Title"] = "Race Results";
 }
-
+<input type="hidden" id="raceToShow" value="@Model.ShowRaceModal" />
 <div class="container">
     <div class="row">
         <div class="col-md-4 offset-md-8 form-group">
@@ -14,7 +14,7 @@
     <div class="text-center col-md-12">
     <h1 class="display-4">@ViewBag.Year Race Results</h1>
 
-    <table class="table table-bordered bg-light">
+    <table class="table table-bordered table-responsive-lg bg-light">
         <thead>
             <tr>
                 <th>#</th>
@@ -22,35 +22,84 @@
                 <th>Track</th>
                 <th>Winner</th>
                 <th>Pole</th>
-                <th>Results</th>
+                <th>Results</th>                
             </tr>
         </thead>
         <tbody>
-            @foreach (RaceViewModel race in Model)
+            @foreach (RaceViewModel race in Model.Events)
             {
-                <tr>
-                    <td>@race.RaceNum</td>
-                    <td>@race.Name</td>
-                    <td>@race.Track</td>
-                    <td>@race.Winner</td>
-                    <td>@race.Pole</td>
-                    <td><a href="../../@race.Link" target="_blank">@race.Link</a></td>
-                </tr>
+            <tr>
+                <td>@race.RaceNum</td>
+                <td>@(race.Name ?? "")</td>
+                <td>@race.Track</td>
+                <td>@(race.Winner ?? "")</td>
+                <td>@race.Pole</td>
+                @{
+                    if (race.HasResults)
+                    {
+                        <td><a href="#" onclick="ShowResults(@race.EventId);">Results</a></td>
+                    } else
+                    {
+                        <td></td>
+                    }
+                }
+
+            </tr>
             }
         </tbody>
     </table>
     </div>
 </div>
 
+<div class="modal fade" id="resultsModal" aria-labelledby="resultsModal" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="resultsModalTitle">Modal Title</h5>
+                <a style="cursor: pointer;" class="close" onclick="$('#resultsModal').modal('hide');" aria-label="Close">&times;</a>
+            </div>
+            <div class="modal-body">
+                <div class="text-center" id="resultsModalLoader">
+                    <img src="~/Images/loader.gif" />
+                </div>
+                <div class="text-center" id="resultsModalInfo">
+                    <table id="resultsTable" class="table table-bordered table-responsive-lg">
+                        <thead>
+                            <tr>
+                                <th>Finish</th>
+                                <th>Start</th>
+                                <th>Driver</th>
+                                <th>Number</th>
+                                <th>Laps</th>
+                                <th>Led</th>
+                                <th>Points</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-md-12 text-right">
+                    <a href="#" id="fullResultsLink" target="_blank">Results File >></a>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button onclick="$('#resultsModal').modal('hide');" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script type="text/javascript">
-$(document).ready(function() {
+    $(document).ready(function () {        
     $.ajax({
         url: '/Home/GetYears',
         success: function(data) {
             for(var i = 0; i < data.length; i++) {
                 let option = $('<option></option>');
-                option.val(data[i].substring(data[i].length - 4));
-                option.text(data[i].substring(data[i].length - 4));
+                option.val(data[i]);
+                option.text(data[i]);
                 $('#year_select').append(option);
             }
             $('#year_select option[value="' + @ViewBag.Year + '"]').prop('selected', true);
@@ -63,3 +112,4 @@ $(document).ready(function() {
     });
 });
 </script>
+<script type="text/javascript" src="~/js/race_results.js"></script>

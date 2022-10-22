@@ -1,0 +1,113 @@
+﻿@model TrackStatsViewModel;
+@{
+    ViewData["Title"] = "Tracks";
+}
+
+<script type="text/javascript" src="~/js/track_stats.js"></script>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12 text-center">
+            <h1 class="display-4">Track Information</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="text-center col-md-12">
+            <table class="table table-bordered table-responsive-lg" id="track_table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Length</th>
+                        <th>Type</th>
+                        <th>Races Run</th>
+                        <th>Previous Winner</th>
+                        <th>Most Wins</th>
+                        <th>Most Laps Led</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (TrackStatsViewModel.TSVTrack track in Model.trackList)
+                    {
+                        <tr>
+                            <td>@track.Track.Name</td>
+                            <td class="text-right">@track.Track.Length mi</td>
+                            <td>@track.Track.Type</td>
+                            <td>@track.RaceCount</td>
+                            <td>@track.PreviousWinner</td>
+                            <td>
+                                @{
+                                    foreach (var driver in track.AllTimeWinner)
+                                    {
+                                        @Html.Raw("<a href=\"./Driver?driver=" + driver.Driver.Name + "\" target=\"_blank\">" + driver.Driver.Name + "</a>");
+                                        @Html.Raw(track.AllTimeWinner.Last().Driver.DriverId != driver.Driver.DriverId ? ",\n " : "");
+                                    }
+                                    @Html.Raw(": " + track.AllTimeWinner.First().WinCount);
+                                }
+                            </td>
+                            <td>
+                                @{ 
+                                    foreach (var driver in track.AllTimeLeader)
+                                    {
+                                        @Html.Raw("<a href=\"./Driver?driver=" + driver.Driver.Name + "\" target=\"_blank\">" + driver.Driver.Name + "</a>");
+                                        @Html.Raw(track.AllTimeLeader.Last().Driver.DriverId != driver.Driver.DriverId ? ", " : "");
+                                    }
+                                    @Html.Raw(": " + track.AllTimeLeader.First().LapCount);
+                                }
+                            </td>
+                            <td>
+                                <a href="#" onclick="ShowHistory(@track.Track.TrackId);">Track History</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="trackHistoryModal" tabindex="-1" arial-labelledby="trackHistoryModal" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="trackHistoryModalTitle">Modal Title</h5>
+                <a style="cursor: pointer;" class="close" onclick="$('#trackHistoryModal').modal('hide');" aria-label="Close">&times;</a>
+            </div>
+            <div class="modal-body">
+                <div class="text-center" id="trackHistoryModalLoader">
+                    <img src="~/Images/loader.gif" />
+                </div>
+                <div class="text-center" id="trackHistoryModalInfo">
+                    <div class="row">
+                        <div class="text-center" style="width: 50%; padding: 10px;">
+                            <img style="max-height: 150px; max-width: 100%;" id="trackIcon" />
+                            <span id="trackIconText" class="text-hide"></span>
+                        </div>
+                        <div class="text-center" style="width: 50%; padding: 10px; ">
+                            <img style="max-height: 150px; max-width: 100%;" id="trackLayout" />
+                            <span id="trackLayoutText" class="text-hide"></span>
+                        </div>
+                    </div>
+                    <hr />
+                    <h1 class="display-4">Track History</h1>
+                    <table class="table table-bordered table-responsive-lg" id="trackHistory">
+                        <thead>
+                            <tr>
+                                <th>Year</th>
+                                <th>Race Number</th>
+                                <th>Race Name</th>
+                                <th>Pole</th>
+                                <th>Winner</th>
+                                <th>Cautions</th>
+                                <th>Results</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button onclick="$('#trackHistoryModal').modal('hide');" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

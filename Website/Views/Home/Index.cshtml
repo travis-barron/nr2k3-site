@@ -1,51 +1,124 @@
-﻿@model List<string[]>;
+﻿@model IndexViewModel;
 
 @{
     ViewData["Title"] = "Season Standings";
 }
-<div class="row">
-    <div class="col-md-4 offset-md-4 form-group">
-        <select id="year_select" class="form-control">
-            @foreach (string year in Model[0])
-            {
-                <option value="@year.Substring(year.Length - 4)">@year.Substring(year.Length - 4)</option>
-            }
-        </select>
-    </div>
+<div class="container bg-dark text-light" style="margin-bottom: 2em;">
+    <div class="row">
+        <div class="col-md-7 col-sm-6">
+            <div class="row">
+                <div class="col-md-12 col-sm-12 text-center" style="min-height: 450px; background-color: #f8f9fa; background-image: url(Images/topstory.png); background-position: center center; background-size: cover; padding: 5em; border: 4px solid #343a40;">
+                    <!--<img src="./Images/Icons/@Model.CurrentYear/@(Model.HeadlineDriver.Number + ".png")" style="width: 60%;" />-->
+                    <div class="text-center" style="position: absolute; bottom: 0; left: 0; width: 100%; background-color: #fef000; color: #343a40;">
+                        <b>@Model.MainHeadline</b>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 col-sm-12">
+                    <h3><span style="width: 100%; text-align: center;">Headlines</span></h3>
+                    <ul id="headline-list" style="list-style-type: none; margin: 0; padding: 0;"></ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-5 col-sm-6 bg-light">
+            <div class="card">
+                <div class="card-header text-dark"><span id="cur_year">@Model.CurrentYear</span> Season Top 10</div>
+                <div class="card-body">
+                    <table class="table table-responsive" id="top10-list">
+                        <thead>
+                            <tr>
+                                <th>Position</th>
+                                <th>Driver</th>
+                                <th>Points</th>
+                                <th>Behind</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                int position = 1;
+                                int top = Model.Top10.First().Points;
+                                foreach (var d in Model.Top10)
+                                {
 
-    <div class="col-md-4 form-group">
-        <select id="week_select" class="form-control">
-            @foreach (string dir in Model[1])
-            {
-                <option value="@dir.Substring(dir.Length - 4)">@dir.Substring(dir.Length - 4)</option>
-            }
-        </select>
+                                    <tr>
+                                        <td>@position</td>
+                                        <td>@d.Name</td>
+                                        <td>@d.Points</td>
+                                        <td>@(d.Points - top) </td>
+                                    </tr>
+                                    position++;
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <div class="card-footer" style="text-align: right;">
+                    <a asp-area="" asp-controller="Home" asp-action="Standings">Full Standings >></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-7 col-sm-12 bg-light text-dark" style="padding-top: 2em;">
+            <h4>Upcoming Schedule</h4>
+            <table class="table table-responsive" id="upcoming-schedule">
+                <tr>
+                    <th>Race Number</th>
+                    <th>Race Name</th>
+                    <th>Location</th>
+                </tr>
+            </table>
+            <div style="text-align: right;">
+                <a asp-area="" asp-controller="Home" asp-action="RaceResults" asp-route-year="@Model.CurrentYear">Full Schedule >></a>
+            </div>
+        </div>
+        <div class="col-md-5 col-sm-12 bg-light text-dark" style="padding-top: 2em;">
+            <h4>Upcoming Track Stats</h4>
+            
+            <div class="card">
+                <div class="card-header bg-light">
+                    <div class="text-center">
+                        <img id="track_img" src="" style="width: 50%;" />
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div id="track_stats_loader" class="col-md-12 text-center">
+                        <img src="~/Images/loader.gif" style="width: 50%;" />
+                    </div>
+                    <div id="track_stats_info">
+                        <table class="table" style="width: 100%;">
+                            <thead>
+                                <tr>
+                                    <th style="border: 0px;">Length</th>
+                                    <td><span id="track_length">length</span></td>
+                                </tr>
+                                <tr>
+                                    <th style="border: 0px;">Type</th>
+                                    <td><span id="track_type">type</span></td>
+                                </tr>
+                                <tr>
+                                    <th style="border: 0px;">Laps</th>
+                                    <td><span id="race_laps">laps</span></td>
+                                </tr>
+                                <tr>
+                                    <th style="border: 0px;">Previous Winner</th>
+                                    <td><span id="prev_winner">winner</span></td>
+                                </tr>
+                                <tr>
+                                    <th style="border: 0px;">Most Wins</th>
+                                    <td><span id="track_wins">wins</span></td>
+                                </tr>
+                                <tr>
+                                    <th style="border: 0px;">Laps Led</th>
+                                    <td><span id="track_laps">led</span></td>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>                
+            </div>
+        </div>
     </div>
 </div>
-
-<div class="text-center col-md-12">
-    <h1 class="display-4"><span id="cur_year"></span> Winston Cup Standings</h1>
-    <table class="table table-bordered table-responsive" id="season_standings">
-        <thead>
-            <tr>
-                <th>Position</th>
-                <th>Driver</th>
-                <th>Number</th>
-                <th>Points</th>
-                <th>Behind</th>
-                <th>Starts</th>
-                <th>Wins</th>
-                <th>Top 5s</th>
-                <th>Top 10s</th>
-                <th>DNFs</th>
-                <th>Laps Led</th>
-                <th>Laps</th>
-                <th>Avg Fin</th>
-            </tr>
-        </thead>
-        <tbody>
-        </tbody>
-    </table>
-</div>
-
 <script type="text/javascript" src="~/js/index.js" defer></script>

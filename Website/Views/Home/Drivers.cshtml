@@ -1,0 +1,55 @@
+﻿@model DriversViewModel;
+@{
+    ViewData["Title"] = "Drivers";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12 text-center">
+            <h1 class="display-4">Driver Information</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="text-center col-md-12">
+            <table class="table table-bordered" id="driver_table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Starts</th>
+                        <th>Wins</th>
+                        <th>Top 10s</th>
+                        <th>Top 5s</th>
+                        <th>DNFs</th>
+                        <th>Poles</th>
+                        <th>Laps Led</th>
+                        <th>Laps</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var d in Model.drivers)
+                    {
+                        <tr>
+                            <td><a href="./Driver?driver=@d.Name">@d.Name</a></td>
+                            <td class="text-right">@d.Starts</td>
+                            <td class="text-right">@d.Wins</td>
+                            <td class="text-right">@d.Top10</td>
+                            <td class="text-right">@d.Top5</td>
+                            <td class="text-right">@d.DNF</td>
+                            <td class="text-right">@d.Pole</td>
+                            <td class="text-right">@d.LapsLed</td>
+                            <td class="text-right">@d.Laps</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#driver_table').DataTable({
+            paging: false
+        });
+    });
+</script>

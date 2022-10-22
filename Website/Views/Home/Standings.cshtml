@@ -1,0 +1,154 @@
+@model List<string[]>;
+@{
+    ViewData["Title"] = "Season Standings";
+}
+<input type="hidden" id="activeYear" value="@ViewData["ActiveYear"]" />
+<input type="hidden" id="activeWeek" value="@ViewData["ActiveWeek"]" />
+<input type="hidden" id="playoffsSystem" value="@ViewData["PlayoffsSystem"]"  />
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-4 offset-md-4 form-group">
+            <label for="year_select">Year</label>
+            <select id="year_select" class="form-control">
+                @foreach (string year in Model[0])
+                {
+                    <option value="@year.Substring(year.Length - 4)">@year.Substring(year.Length - 4)</option>
+                }
+            </select>
+        </div>
+
+        <div class="col-md-4 form-group">
+            <label for="week_select">Week</label>
+            <select id="week_select" class="form-control">
+                @foreach (string week in Model[1])
+                {
+                    <option value="@week">@week</option>
+                }
+            </select>
+        </div>
+    </div>
+
+    <div class="text-center col-md-12">
+        <h1 class="display-4"><span id="cur_year"></span> <span id="cup_desc">PRL Cup</span> Standings</h1>
+        <div id="standings_guide" style="display: none; width: 100%;"><div class="box prl-yellow"></div> - In the <span id="standings_type_text">playoffs</span></div>
+        <table class="table table-bordered table-responsive" id="season_standings">
+            <thead>
+                <tr>
+                    <th>Position</th>
+                    <th>Driver</th>
+                    <th>Number</th>
+                    <th>Points</th>
+                    <th>Behind</th>
+                    <th>Starts</th>
+                    <th>Wins</th>
+                    <th>Top 5s</th>
+                    <th>Top 10s</th>
+                    <th>DNFs</th>
+                    <th>Laps Led</th>
+                    <th>Laps</th>
+                    <th>Avg Fin</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="modal fade" id="seasonModal" tabindex="-3" style="z-index: 1043;" aria-labelledby="seasonModal" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="seasonModalTitle">Season Stats</h5>
+            </div>
+            <div class="modal-body">
+                <div id="season-stats">
+                    <div class="row">
+                        <div class="col-md-2"></div>
+                        <div class="col-md-3">
+                            <b>Season: </b> <span class="float-right" id="seasonModalYear"></span><br />
+                            <b>Races: </b> <span class="float-right" id="seasonModalRaces"></span><br />
+                            <b>Wins: </b> <span class="float-right" id="seasonModalWins"></span><br />
+                            <b>DNFs: </b> <span class="float-right" id="seasonModalDNFs"></span><br />
+                        </div>
+                        <div class="col-md-2"></div>
+                        <div class="col-md-3">
+                            <b>Rank: </b> <span class="float-right" id="seasonModalRank"></span><br />
+                            <b>Laps: </b> <span class="float-right" id="seasonModalLaps"></span><br />
+                            <b>Led: </b> <span class="float-right" id="seasonModalLed"></span><br />
+                            <b>Average Finish: </b> <span class="float-right" id="seasonModalAvg"></span><br />
+                        </div>
+                        <div class="col-md-2"></div>
+                    </div>
+                </div>
+                <hr />
+                <table id="driverSeasonTable" class="table table-bordered table-responsive-lg">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Race</th>
+                            <th>Track</th>
+                            <th>Start</th>
+                            <th>Finish</th>
+                            <th>Laps</th>
+                            <th>Laps Led</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <a id="fullDriverStatsLink" target="_blank" class="btn btn-primary">Full Stats</a>
+                <button onclick="$('#seasonModal').modal('hide');" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="~/js/standings.js" defer></script>
+<script>
+
+    function ShowSeasonModal(driverId, year, rank, parentRow) {
+        $('#seasonModal').modal('show');
+        seasonModalOpen = 1;
+
+        $('#seasonModalTitle').text(parentRow[0].children[1].innerText + " Season Stats");
+        $('#seasonModalYear').text(year);
+        $('#seasonModalRaces').text(parentRow[0].children[5].innerText);
+        $('#seasonModalWins').text(parentRow[0].children[6].innerText);
+        $('#seasonModalDNFs').text(parentRow[0].children[9].innerText);
+        $('#seasonModalRank').text(parentRow[0].children[0].innerText);
+        $('#seasonModalLaps').text(parentRow[0].children[11].innerText);
+        $('#seasonModalLed').text(parentRow[0].children[10].innerText);
+        $('#seasonModalAvg').text(parentRow[0].children[12].innerText);
+        $('#fullDriverStatsLink').prop('href', './Driver?driver=' + parentRow[0].children[1].innerText);
+
+        $.ajax({
+            'url': './GetDriverSeasonStats?driverId=' + driverId + '&seasonId=' + year + '&year=' + year,
+            'success': function (data) {
+                $('#fullSeasonLink').attr("href", "./RaceResults?year=" + parentRow[0].children[0].innerText);
+                var seasonTable = $("#driverSeasonTable").DataTable();
+                seasonTable.destroy();
+                var tbody = $('#driverSeasonTable tbody');
+                tbody.empty();
+                for (var i = 0; i < data.length; i++) {
+                    let row = $('<tr></tr>');
+                    row.append($('<td class="text-right">' + data[i].raceNum + '</td>'));
+                    row.append($('<td class="text-right">' + data[i].raceName + '</td>'));
+                    row.append($('<td class="text-right">' + data[i].track + '</td>'));
+                    row.append($('<td class="text-right">' + data[i].start + '</td>'));
+                    row.append($('<td class="text-right">' + data[i].finish + '</td>'));
+                    row.append($('<td class="text-right">' + data[i].laps + '</td>'));
+                    row.append($('<td class="text-right">' + data[i].led + '</td>'));
+                    row.append($('<td class="text-right">' + data[i].status + '</td>'));
+                    tbody.append(row);
+                }
+                $('#driverSeasonTable').dataTable({
+                    'paging': false
+                });
+            }
+        });
+    }
+</script>

@@ -1,0 +1,43 @@
+F,S,#,DRIVER,LAPS,,POINTS,STATUS
+1,5,6,M Martin,30,2,180,Running
+2,3,20,T Stewart,30,0,170,Running
+3,6,8,D Earnhardt Jr.,30,0,165,Running
+4,7,2,R Wallace,30,0,160,Running
+5,11,88,D Jarrett,30,0,155,Running
+6,12,22,W Burton,30,0,150,Running
+7,4,24,J Gordon,30,0,146,Running
+8,15,31,M Skinner,30,0,142,Running
+9,8,18,B Labonte,30,0,138,Running
+10,9,3,D Earnhardt,30,0,134,Running
+11,17,12,J Mayfield,30,0,130,Running
+12,13,17,M Kenseth,30,0,127,Running
+13,20,1,S Park,30,0,124,Running
+14,21,21,E Sadler,30,0,121,Running
+15,26,4,B Hamilton,30,0,118,Running
+16,14,97,C Little,30,0,115,Running
+17,1,25,T Barron,30,3,117,Running
+18,29,33,K Schrader,30,0,109,Running
+19,24,55,K Wallace,30,0,106,Running
+20,18,5,T Labonte,30,0,103,Running
+21,27,16,K Lepage,30,0,100,Running
+22,16,28,K Irwin Jr.,30,0,97,Running
+23,25,94,B Elliott,30,0,94,Running
+24,22,98,R Mast,30,0,91,Running
+25,37,75,T Musgrave,30,0,88,Running
+26,34,40,S Marlin,30,0,85,Running
+27,30,43,J Andretti,30,0,82,Running
+28,28,42,J Nemechek,30,0,79,Running
+29,32,10,R Rudd,30,0,76,Running
+30,35,60,G Bodine,30,0,73,Running
+31,19,44,K Petty,30,0,70,Running
+32,31,11,B Bodine,30,0,67,Running
+33,23,66,D Waltrip,30,0,64,Running
+34,33,23,J Spencer,30,0,61,Running
+35,41,41,D Green,30,0,58,Running
+36,40,36,E Irvan,30,0,55,Running
+37,2,02,C Barron,28,25,62,Accident
+38,38,26,J Benson,27,0,49,Accident
+39,39,7,M Waltrip,27,0,46,Accident
+40,36,9,J Nadeau,27,0,43,Accident
+41,42,77,R Pressley,27,0,40,Retired
+42,10,99,J Burton,25,0,37,Camshaft

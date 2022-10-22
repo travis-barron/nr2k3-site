@@ -5,17 +5,32 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="LumenWorksCsvReader" Version="4.0.0" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.2" />
+    <Compile Remove="Data\**" />
+    <Content Remove="Data\**" />
+    <EmbeddedResource Remove="Data\**" />
+    <None Remove="Data\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Data\csv\" />
-    <Folder Include="Data\RaceResults\" />
+    <PackageReference Include="LumenWorksCsvReader" Version="4.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.10">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.4" />
+    <PackageReference Include="MySql.Data" Version="8.0.23" />
+    <PackageReference Include="MySql.Data.Entity" Version="6.10.9" />
+    <PackageReference Include="MySql.EntityFrameworkCore" Version="3.1.10-m8.0.23" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="wwwroot\Data\RaceResults\" />
     <Folder Include="wwwroot\Images\Icons\" />
     <Folder Include="wwwroot\Images\Backgrounds\" />
-    <Folder Include="wwwroot\RaceResults\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\.editorconfig" Link=".editorconfig" />
   </ItemGroup>
 
 </Project>

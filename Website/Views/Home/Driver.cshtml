@@ -1,0 +1,373 @@
+﻿@model DriverViewModel;
+@{ 
+    ViewData["Title"] = Model.Driver.Name + " - Career Stats";
+}
+<script type="text/javascript" src="~/lib/vibrant/Vibrant.min.js"></script>
+
+<style>
+    #driver_table tbody td
+    {
+        text-align: right;
+    }
+
+    #track_table tbody td
+    {
+        text-align: left;
+    }
+
+    .track-link {
+        color: #0366d6 !important;
+        cursor: pointer;        
+    }
+
+        .track-link:hover {
+            text-decoration: underline;
+        }
+</style>
+
+<div class="row" id="driver_panel" style="padding: 5px; 
+     background-color: @Model.Driver.PrimaryColor; 
+     border: 10px solid @Model.Driver.SecondaryColor;
+     color: @Model.Driver.SecondaryColor;">
+    <div class="col-md-6 text-center">
+        <h1 class="display-4"><b>@Model.Driver.Name</b></h1>
+    </div>
+    <div class="col-md-6 text-center">
+        @{
+            var maxYear = Model.Results.Max(r => r.Event.Schedule.Year);
+            var icon = @Model.Results.Where(r => r.Event.Schedule.Year == maxYear).First().Number.ToString() + ".png";
+            <img id="driver_icon" src="~/Images/Icons/2002/@icon" style="max-width: 100px;"/>
+        }
+
+    </div>
+</div>
+
+<div class="row">    
+    <div class="col-md-12 text-center">
+        <table class="table table-bordered table-responsive-lg" id="driver_table">
+            <thead>
+                <tr>
+                    <th>Season</th>
+                    <th>Races</th>
+                    <th>Laps</th>
+                    <th>Led</th>
+                    <th>Avg Finish</th>
+                    <th>Wins</th>
+                    <th>Poles</th>
+                    <th>DNFs</th>
+                    <th>Rank</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var y in Model.Results.Select(r => r.Event.Schedule).Distinct().OrderBy(x => x.Year).ToList())
+                {
+                    <tr>
+                        <td><a href="#" onclick="ShowSeasonModal(@Model.Driver.DriverId, @y.ScheduleId, @Model.rank[y.Year], $(this).parent().parent());">@y.Year</a></td>
+                        <td>@Model.Results.Where(r => r.Event.ScheduleId == y.ScheduleId).Count()</td>
+                        <td>@Model.Results.Where(r => r.Event.ScheduleId == y.ScheduleId).Select(e => e.Laps).Sum()</td>
+                        <td>@Model.Results.Where(r => r.Event.ScheduleId == y.ScheduleId).Select(e => e.Led).Sum()</td>
+                        <td>@Model.Results.Where(r => r.Event.ScheduleId == y.ScheduleId).Average(r => r.Finish).ToString("N2")</td>
+                        <td>@Model.Results.Where(r => r.Event.ScheduleId == y.ScheduleId).Where(e => e.Finish == 1).Count()</td>
+                        <td>@Model.Results.Where(r => r.Event.ScheduleId == y.ScheduleId).Where(e => e.Start == 1).Count()</td>
+                        <td>@Model.Results.Where(r => r.Event.ScheduleId == y.ScheduleId).Where(e => e.Status != "Running").Count()</td>
+                        <td>@Model.rank[y.Year]</td>
+                    </tr>
+                }
+                <tr>
+                    <td><b>@Model.Results.Select(e => e.Event.Schedule).Distinct().Count() Years</b></td>
+                    <td><b>@Model.Results.Count()</b></td>
+                    <td><b>@Model.Results.Select(e => e.Laps).Sum()</b></td>
+                    <td><b>@Model.Results.Select(e => e.Led).Sum()</b></td>
+                    <td><b>@Model.Results.Average(r => r.Finish).ToString("N2")</b></td>
+                    <td><b>@Model.Results.Where(r => r.Finish == 1).Count()</b></td>
+                    <td><b>@Model.Results.Where(r => r.Start == 1).Count()</b></td>
+                    <td><b>@Model.Results.Where(e => e.Status != "Running").Count()</b></td>
+                    <td><b>@Model.rank.Values.Average().ToString("N2")</b></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12 text-center">
+        <h1 class="display-4">Track Performance Stats</h1>
+        <table class="table table-bordered table-responsive-lg" id="track_table">
+            <thead>
+                <tr>
+                    <th>Track</th>
+                    <th>Races</th>
+                    <th>Average Start</th>
+                    <th>Poles</th>
+                    <th>Wins</th>
+                    <th>Average Finish</th>
+                    <th>Best</th>
+                    <th>DNFs</th>
+                    <th>Laps</th>
+                    <th>Laps Led</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var ts in Model.TrackStats.OrderBy(t => t.Track.Name).ToList())
+                {
+                <tr>
+                    <td><a class="track-link" onclick="ShowTrackModal(@Model.Driver.DriverId, @ts.Track.TrackId);">@ts.Track.Name</a></td>
+                    <td class="text-right">@ts.Races</td>
+                    <td class="text-right">@ts.AverageStart.ToString("N2")</td>
+                    <td class="text-right">@ts.Poles</td>
+                    <td class="text-right">@ts.Wins</td>
+                    <td class="text-right">@ts.AverageFinish.ToString("N2")</td>
+                    <td class="text-right">@ts.BestFinish</td>
+                    <td class="text-right">@ts.DNFs</td>
+                    <td class="text-right">@ts.Laps</td>
+                    <td class="text-right">@ts.LapsLed</td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="modal fade" id="trackModal" tabindex="-1" style="z-index: 1045;" aria-labelledby="trackModal" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="trackModalTitle">Modal title</h5>
+                <a style="cursor: pointer;" class="close" onclick="$('#trackModal').modal('hide');" aria-label="Close">&times;</a>
+            </div>
+            <div class="modal-body">
+                <div class="text-center" id="trackModalLoader">
+                    <img src="~/Images/loader.gif" />
+                </div>
+                <div class="text-center" id="trackModalInfo">
+                    <div class="row">
+                        <div class="text-center" style="width: 50%; padding: 10px;">
+                            <img style="max-height: 150px; max-width: 100%;" id="trackIcon" />
+                            <span id="trackIconText" class="text-hide"></span>
+                        </div>
+                        <div class="text-center" style="width: 50%; padding: 10px; ">
+                            <img style="max-height: 150px; max-width: 100%;" id="trackLayout" />
+                            <span id="trackLayoutText" class="text-hide"></span>
+                        </div>
+                    </div>
+                    <hr />
+                    <h1 class="display-4">Track Totals</h1>
+                    <table class="table table-bordered table-responsive-lg" id="totalTrackStats">
+                        <thead>
+                            <tr>
+                                <th>Races</th>
+                                <th>Average Start</th>
+                                <th>Poles</th>
+                                <th>Wins</th>
+                                <th>Average Finish</th>
+                                <th>Best</th>
+                                <th>DNFs</th>
+                                <th>Laps</th>
+                                <th>Laps Led</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                    <hr />
+                    <h1 class="display-4">Race Breakdown</h1>
+                    <table class="table table-bordered table-responsive-lg" id="trackStats">
+                        <thead>
+                            <tr>
+                                <th>Race</th>
+                                <th>Start</th>
+                                <th>Finish</th>
+                                <th>Laps</th>
+                                <th>Laps Led</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>                
+            </div>
+            <div class="modal-footer">
+                <button onclick="$('#trackModal').modal('hide');" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>                
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="seasonModal" tabindex="-3" style="z-index: 1043;" aria-labelledby="seasonModal" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="seasonModalTitle">Season Stats</h5>
+            </div>
+            <div class="modal-body">
+                <div id="season-stats">
+                    <div class="row">
+                        <div class="col-md-2"></div>
+                        <div class="col-md-3">
+                            <b>Season: </b> <span class="float-right" id="seasonModalYear"></span><br />
+                            <b>Races: </b> <span class="float-right" id="seasonModalRaces"></span><br />
+                            <b>Wins: </b> <span class="float-right" id="seasonModalWins"></span><br />
+                            <b>DNFs: </b> <span class="float-right" id="seasonModalDNFs"></span><br />
+                        </div>        
+                        <div class="col-md-2"></div>
+                        <div class="col-md-3">
+                            <b>Rank: </b> <span class="float-right" id="seasonModalRank"></span><br />
+                            <b>Laps: </b> <span class="float-right" id="seasonModalLaps"></span><br />
+                            <b>Led: </b> <span class="float-right" id="seasonModalLed"></span><br />
+                            <b>Average Finish: </b> <span class="float-right" id="seasonModalAvg"></span><br />
+                        </div>
+                        <div class="col-md-2"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 text-right">
+                            <a href="#" id="fullSeasonLink">Full Season Results >></a>
+                        </div>
+                    </div>
+                </div>
+                <hr />
+                <table id="driverSeasonTable" class="table table-bordered table-responsive-lg">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Race</th>
+                            <th>Track</th>
+                            <th>Start</th>
+                            <th>Finish</th>
+                            <th>Laps</th>
+                            <th>Laps Led</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button onclick="$('#seasonModal').modal('hide');" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    let seasonModalOpen = 0;
+    $(document).ready(function () {
+        $('#driver_table').DataTable({
+            "paging": false
+        });
+        $('#track_table').DataTable({
+            "paging": false
+        });    
+    });
+
+    $('#trackModal').on('hidden.bs.modal', function () {
+        $('#trackModalLoader').show();
+        $('#trackModalInfo').hide();
+        $('#trackStats tbody').empty();
+        $('#totalTrackStats tbody').empty();
+    });
+
+    function ShowTrackModal(driverId, trackId) {
+        $('#trackModalLoader').show();
+        $('#trackModalInfo').hide();
+        $('#trackModal').modal('show');
+
+        $.ajax({
+            'url': './GetDriverTrackStats?driverId=' + driverId + '&trackId=' + trackId,
+            'success': function (data) {
+                $('#trackIcon').attr('src', data[0].trackIcon);
+                $('#trackLayout').attr('src', data[0].trackLayout);
+                $("#trackModalTitle").text(data[0].trackName);
+                var tbody = $('#trackStats tbody');
+                let wins = 0;
+                let avgStart = 0;
+                let poles = 0;
+                let avgFinish = 0;
+                let laps = 0;
+                let led = 0;
+                let DNF = 0;
+                let best = 0;
+                for (var i = 0; i < data.length; i++) {
+                    console.log(data[i]);
+                    let row = $('<tr></tr>');
+                    row.append($('<td class="text-left">' + data[i].raceYearNum + '</td>'));
+                    row.append($('<td class="text-right">' + data[i].start + '</td>'));
+                    row.append($('<td class="text-right">' + data[i].finish + '</td>'));
+                    row.append($('<td class="text-right">' + data[i].laps + '</td>'));
+                    row.append($('<td class="text-right">' + data[i].led + '</td>'));
+                    row.append($('<td class="text-right">' + data[i].status + '</td>'));
+                    tbody.append(row);
+
+                    wins += data[i].finish == 1 ? 1 : 0;
+                    poles += data[i].start == 1 ? 1 : 0;
+                    avgStart += data[i].start;
+                    avgFinish += data[i].finish;
+                    laps += data[i].laps;
+                    led += data[i].led;
+                    DNF += data[i].status != 'Running' ? 1 : 0;
+                    if (best == 0) {
+                        best = data[i].finish;
+                    } else {
+                        best = best >= data[i].finish ? data[i].finish : best;
+                    }
+                }                
+                var totalBody = $('#totalTrackStats tbody');
+                let row = $('<tr></tr>');
+                row.append($('<td class="text-right">' + data.length + '</td>'));
+                row.append($('<td class="text-right">' + (avgStart / data.length).toFixed(2) + '</td>'));
+                row.append($('<td class="text-right">' + poles + '</td>'));
+                row.append($('<td class="text-right">' + wins + '</td>'));
+                row.append($('<td class="text-right">' + (avgFinish / data.length).toFixed(2) + '</td>'));
+                row.append($('<td class="text-right">' + best + '</td>'));
+                row.append($('<td class="text-right">' + DNF + '</td>'));
+                row.append($('<td class="text-right">' + laps + '</td>'));
+                row.append($('<td class="text-right">' + led + '</td>'));
+                totalBody.append(row);
+
+                $('#trackModalLoader').hide();
+                $('#trackModalInfo').show();
+            }
+        });
+    }
+
+    function ShowSeasonModal(driverId, year, rank, parentRow) {
+        $('#seasonModal').modal('show');
+        seasonModalOpen = 1;
+
+        $('#seasonModalTitle').text(parentRow[0].children[0].innerText + " Season Stats");
+        $('#seasonModalYear').text(parentRow[0].children[0].innerText);
+        $('#seasonModalRaces').text(parentRow[0].children[1].innerText);
+        $('#seasonModalWins').text(parentRow[0].children[5].innerText);
+        $('#seasonModalDNFs').text(parentRow[0].children[7].innerText);
+        $('#seasonModalRank').text(parentRow[0].children[8].innerText);
+        $('#seasonModalLaps').text(parentRow[0].children[2].innerText);
+        $('#seasonModalLed').text(parentRow[0].children[3].innerText);
+        $('#seasonModalAvg').text(parentRow[0].children[4].innerText);
+
+        $.ajax({
+            'url': './GetDriverSeasonStats?driverId=' + driverId + '&seasonId=' + year,
+            'success': function (data) {
+                $('#fullSeasonLink').attr("href", "./RaceResults?year=" + parentRow[0].children[0].innerText);
+                var seasonTable = $("#driverSeasonTable").DataTable();
+                seasonTable.destroy();
+                var tbody = $('#driverSeasonTable tbody');
+                tbody.empty();
+                for (var i = 0; i < data.length; i++) {
+                    let row = $('<tr></tr>');
+                    row.append($('<td class="text-right">' + data[i].raceNum + '</td>'));
+                    row.append($('<td class="text-right">' + data[i].raceName + '</td>'));
+                    row.append($('<td class="text-right">' + data[i].track + '</td>'));
+                    row.append($('<td class="text-right">' + data[i].start + '</td>'));
+                    row.append($('<td class="text-right">' + data[i].finish + '</td>'));
+                    row.append($('<td class="text-right">' + data[i].laps + '</td>'));
+                    row.append($('<td class="text-right">' + data[i].led + '</td>'));
+                    row.append($('<td class="text-right">' + data[i].status + '</td>'));
+                    tbody.append(row);
+                }
+                $('#driverSeasonTable').dataTable({
+                    'paging': false
+                });
+            }
+        });
+    }
+
+</script>

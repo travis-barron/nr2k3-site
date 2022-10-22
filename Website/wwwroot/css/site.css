@@ -62,7 +62,7 @@ body {
     /* Margin bottom by footer height */
     margin-bottom: 60px;
     background-color: #999;
-    background-image: linear-gradient(red, black);
+    background-color: #000;
 }
 
 table {
@@ -85,4 +85,16 @@ table {
     width: 1024px;
     overflow: hidden;
     border: 1px solid #ccc;
+}
+
+.box {
+    min-height: 20px;
+    min-width: 20px;
+    border: 1px solid #343a40;
+    clear: both;
+    display: inline-block;
+}
+
+.prl-yellow {
+    background-color: #fef000;
 }

@@ -1,0 +1,43 @@
+F,S,#,DRIVER,LAPS,,POINTS,STATUS
+1,9,31,M Skinner,56,3,180,Running
+2,16,4,B Hamilton,56,0,170,Running
+3,15,1,S Park,56,0,165,Running
+4,30,60,G Bodine,56,0,160,Running
+5,14,5,T Labonte,56,0,155,Running
+6,2,25,T Barron,56,2,155,Running
+7,23,21,E Sadler,56,0,146,Running
+8,37,75,T Musgrave,56,0,142,Running
+9,41,66,D Waltrip,56,0,138,Running
+10,6,99,J Burton,56,0,134,Running
+11,4,33,K Schrader,56,0,130,Running
+12,42,9,J Nadeau,56,0,127,Running
+13,28,40,S Marlin,56,0,124,Running
+14,24,94,B Elliott,56,0,121,Running
+15,1,17,M Kenseth,56,9,123,Running
+16,26,10,R Rudd,56,0,115,Running
+17,33,16,K Lepage,56,0,112,Running
+18,29,43,J Andretti,56,0,109,Running
+19,17,28,K Irwin Jr.,56,0,106,Running
+20,38,98,R Mast,55,0,103,Running
+21,32,36,E Irvan,55,0,100,Running
+22,3,02,C Barron,55,0,97,Running
+23,7,6,M Martin,51,4,99,No Fuel
+24,5,20,T Stewart,51,10,96,Tire
+25,12,8,D Earnhardt Jr.,51,0,88,Header
+26,13,88,D Jarrett,51,28,95,Accident
+27,11,24,J Gordon,51,0,82,Accident
+28,8,22,W Burton,51,0,79,Accident
+29,20,3,D Earnhardt,50,0,76,Accident
+30,22,12,J Mayfield,50,0,73,Retired
+31,35,7,M Waltrip,50,0,70,Accident
+32,40,11,B Bodine,50,0,67,Accident
+33,21,26,J Benson,49,0,64,Retired
+34,19,23,J Spencer,49,0,61,Retired
+35,39,71,D Marcis,49,0,58,Retired
+36,18,18,B Labonte,5,0,55,Camshaft
+37,36,45,R Bickle,4,0,52,Retired
+38,31,42,J Nemechek,4,0,49,Ignition
+39,10,2,R Wallace,4,0,46,Accident
+40,25,97,C Little,3,0,43,Accident
+41,27,44,K Petty,3,0,40,Accident
+42,34,55,K Wallace,3,0,37,Accident
