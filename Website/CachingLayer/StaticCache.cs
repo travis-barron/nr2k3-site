@@ -26,6 +26,28 @@ namespace Website.CachingLayer
             results = context.Results.ToList();
             schedules = context.Schedule.ToList();
             tracks = context.Track.ToList();
+            context.Dispose();
+        }
+
+        public static void RefreshStaticCache()
+        {
+            var context = new racing.racingContext();
+            List<racing.Config> temp_configs = context.Config.ToList();
+            List<racing.Driver> temp_drivers = context.Driver.ToList();
+            List<racing.Event> temp_events = context.Event.ToList();
+            List<racing.Race> temp_races = context.Race.ToList();
+            List<racing.Results> temp_results = context.Results.ToList();
+            List<racing.Schedule> temp_schedules = context.Schedule.ToList();
+            List<racing.Track> temp_tracks = context.Track.ToList();
+
+            configs = temp_configs;
+            drivers = temp_drivers;
+            events = temp_events;
+            races = temp_races;
+            results = temp_results;
+            schedules = temp_schedules;
+            tracks = temp_tracks;
+            context.Dispose();
         }
 
         [DataObjectMethodAttribute(DataObjectMethodType.Select, true)]

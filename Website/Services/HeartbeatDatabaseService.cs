@@ -19,7 +19,7 @@ namespace Website.Services
         public HeartbeatDatabaseService(ILogger<HeartbeatDatabaseService> logger)
         {
             _logger = logger;
-            _interval = TimeSpan.FromMinutes(5.0);
+            _interval = TimeSpan.FromSeconds(10.0);
             _version = GetLatestVersion();
         }
 
@@ -30,7 +30,8 @@ namespace Website.Services
                 var latestVersion = GetLatestVersion();
                 if (_version != latestVersion)
                 {
-                    StaticCache.LoadStaticCache();
+                    _logger.LogError("Refreshing cache");
+                    StaticCache.RefreshStaticCache();
                     _version = latestVersion;
                 }
                 await Task.Delay(_interval, stoppingToken);
@@ -40,7 +41,9 @@ namespace Website.Services
         private long GetLatestVersion()
         {
             var racingContext = new Website.racing.racingContext();
-            return racingContext.Config.ToList().Last().Version;   
+            var latestVersion = racingContext.Config.ToList().Last().Version;
+            racingContext.Dispose();
+            return latestVersion;
         }
     }
 }

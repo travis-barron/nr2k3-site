@@ -398,7 +398,6 @@ C:\Users\tbarr\Desktop\Barron Racing\Site\Website\Website\bin\Release\netcoreapp
 C:\Users\tbarr\Desktop\Barron Racing\Site\Website\Website\bin\Release\netcoreapp3.1\linux-arm\System.Security.Cryptography.Xml.dll
 C:\Users\tbarr\Desktop\Barron Racing\Site\Website\Website\bin\Release\netcoreapp3.1\linux-arm\System.Security.Permissions.dll
 C:\Users\tbarr\Desktop\Barron Racing\Site\Website\Website\bin\Release\netcoreapp3.1\linux-arm\System.Windows.Extensions.dll
-C:\Users\tbarr\Desktop\Barron Racing\Site\Website\Website\obj\Release\netcoreapp3.1\linux-arm\Website.csprojAssemblyReference.cache
 C:\Users\tbarr\Desktop\Barron Racing\Site\Website\Website\obj\Release\netcoreapp3.1\linux-arm\Website.csproj.CoreCompileInputs.cache
 C:\Users\tbarr\Desktop\Barron Racing\Site\Website\Website\obj\Release\netcoreapp3.1\linux-arm\Website.MvcApplicationPartsAssemblyInfo.cache
 C:\Users\tbarr\Desktop\Barron Racing\Site\Website\Website\obj\Release\netcoreapp3.1\linux-arm\Website.RazorAssemblyInfo.cache
@@ -452,3 +451,5 @@ C:\Users\tbarr\Desktop\Barron Racing\Site\Website\Website\obj\Release\netcoreapp
 C:\Users\tbarr\Desktop\Barron Racing\Site\Website\Website\obj\Release\netcoreapp3.1\linux-arm\Razor\Views\Home\Drivers.cshtml.g.cs
 C:\Users\tbarr\Desktop\Barron Racing\Site\Website\Website\obj\Release\netcoreapp3.1\linux-arm\scopedcss\bundle\Website.styles.css
 C:\Users\tbarr\Desktop\Barron Racing\Site\Website\Website\obj\Release\netcoreapp3.1\linux-arm\Razor\Views\Home\TrackStats.cshtml.g.cs
+C:\Users\tbarr\Desktop\Barron Racing\Site\Website\Website\obj\Release\netcoreapp3.1\linux-arm\Website.csproj.AssemblyReference.cache
+C:\Users\tbarr\Desktop\Barron Racing\Site\Website\Website\obj\Release\netcoreapp3.1\linux-arm\Website.GeneratedMSBuildEditorConfig.editorconfig
